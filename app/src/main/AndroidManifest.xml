@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.peterstev.unify" >
 
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -19,10 +21,6 @@
         <activity
             android:name=".ChooseSchool"
             android:label="@string/title_activity_choose_school" >
-        </activity>
-        <activity
-            android:name=".Home"
-            android:label="@string/title_activity_home" >
         </activity>
     </application>
 
