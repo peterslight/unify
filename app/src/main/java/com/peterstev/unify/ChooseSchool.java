@@ -3,22 +3,24 @@ package com.peterstev.unify;
 import android.app.Dialog;
 import android.app.ListActivity;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
-public class ChooseSchool extends ListActivity  {
+import retrofit2.Retrofit;
+
+public class ChooseSchool extends ListActivity {
 
     ArrayAdapter<String> arrayAdapter;
     String[] schoolList = {"List Of Schools"};
-    Button assCourses, assClasses;
+       Button assCourses, assClasses;
     Intent intent;
+    private Data data;
+
+    private Retrofit client;
 
     Dialog dialog;
 
@@ -34,15 +36,14 @@ public class ChooseSchool extends ListActivity  {
     @Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
-
         switch(position){
             case 0:
-                dialog = new Dialog(ChooseSchool.this);
-                dialog.setContentView(R.layout.activity_home);
-                assClasses = (Button) dialog.findViewById(R.id.btn_assigned_classes);
-                assCourses = (Button) dialog.findViewById(R.id.btn_assigned_courses);
-                dialog.setTitle("Welcome getStaffName");
-                dialog.show();
+//                dialog = new Dialog(ChooseSchool.this);
+//                dialog.setContentView(R.layout.schools_list);
+////                assClasses = (Button) dialog.findViewById(R.id.btn_assigned_classes);
+////                assCourses = (Button) dialog.findViewById(R.id.btn_assigned_courses);
+//                dialog.setTitle("Welcome getStaffName");
+//                dialog.show();
 
                 assCourses.setOnClickListener(new View.OnClickListener() {
                     @Override

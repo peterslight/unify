@@ -19,6 +19,7 @@ private String apiToken;
 @Expose
 private String fullName;
 
+
 /**
 * 
 * @return
