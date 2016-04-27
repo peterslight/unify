@@ -12,7 +12,7 @@ public class Data {
 private Staff staff;
 @SerializedName("schools")
 @Expose
-private List<String> schools = new ArrayList<String>();
+private List<School> schools = new ArrayList<School>();
 
 /**
 * 
@@ -37,7 +37,7 @@ this.staff = staff;
 * @return
 * The schools
 */
-public List<String> getSchools() {
+public List<School> getSchools() {
 return schools;
 }
 
@@ -45,8 +45,8 @@ return schools;
 * 
 * @param schools
 * The schools
-*/
-public void setSchools(List<String> schools) {
+*/ 
+public void setSchools(List<School> schools) {
 this.schools = schools;
 }
 

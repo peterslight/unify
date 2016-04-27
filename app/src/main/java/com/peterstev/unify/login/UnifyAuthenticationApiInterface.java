@@ -12,7 +12,4 @@ public interface UnifyAuthenticationApiInterface {
     @POST("authenticate")
     Call<UnifyAuthenticationApiResponse> staffLogin(@Field("email") String email, @Field("password") String password);
 
-//    @FormUrlEncoded
-//    @POST("validate")
-//    Call<UnifyAuthenticationApiResponse> numSchools(@Field("schools") List<String> schools);
 }

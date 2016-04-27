@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -17,11 +18,15 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.peterstev.unify.login.School;
+import com.peterstev.unify.login.SchoolListAdapter;
 import com.peterstev.unify.login.Staff;
 import com.peterstev.unify.login.UnifyAuthenticationApiInterface;
 import com.peterstev.unify.login.UnifyAuthenticationApiResponse;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import retrofit2.Call;
@@ -43,11 +48,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     Button assCourses, assClasses;
     Intent intent;
 
-    private List<String> schools;
+    private List<School> mySchoolsList;
     String[] schoolsArray;
-    ArrayAdapter<String> schoolsArrayAdapter;
+    SchoolListAdapter schoolsArrayAdapter;
+    String recieveName;
     ListView schoolsListView;
     Dialog dialog;
+    Object[] objectArray;
+
 
     private ProgressDialog progressDialog;
 
@@ -69,6 +77,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         email = this.emailTextBox.getText().toString();
         password = this.passwordTextBox.getText().toString();
+        passwordTextBox.setText("password");
 
         if (TextUtils.isEmpty(email) || TextUtils.isEmpty(password)) {
 
@@ -87,43 +96,32 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onResponse(Call<UnifyAuthenticationApiResponse> call,
                                    Response<UnifyAuthenticationApiResponse> response) {
-                if (response.isSuccessful()) {
-                    // request successful (status code 200, 201)
-                    UnifyAuthenticationApiResponse result = response.body();
 
-                    com.peterstev.unify.login.Data data = result.getData();
+                UnifyAuthenticationApiResponse result = response.body();
+                School school = new School();
+                com.peterstev.unify.login.Data data = result.getData();
+                mySchoolsList = new ArrayList<School>();
+                mySchoolsList = data.getSchools();
+                staff = data.getStaff();
 
-                    staff = data.getStaff();
-                    schools = new ArrayList<String>();
-                    schools = data.getSchools();
-                    schoolsArray = schools.toArray(new String[]{});
+                gotoHomeActivity();
 
-
-                    Toast.makeText(MainActivity.this, "Hello, " + staff.getFullName(), Toast.LENGTH_LONG).show();
-
-                    gotoHomeActivity();
-
-                } else {
-                    progressDialog.dismiss();
-                    Toast.makeText(MainActivity.this, "Login Failed", Toast.LENGTH_SHORT).show();
-                }
             }
 
             @Override
             public void onFailure(Call<UnifyAuthenticationApiResponse> call, Throwable t) {
                 progressDialog.dismiss();
-                Toast.makeText(MainActivity.this, "Login Failed", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "Login Failed @ onFailure", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     private void gotoHomeActivity() {
         progressDialog.dismiss();
-        if (schoolsArray.length > 1) {
-
+        if (mySchoolsList.size() > 1) {
+            //Toast.makeText(MainActivity.this, "you have " + schoolsArray.length + " schools", Toast.LENGTH_LONG).show();
             schoolsListView = new ListView(MainActivity.this);
-
-            schoolsArrayAdapter = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_list_item_1, schoolsArray);
+            schoolsArrayAdapter = new SchoolListAdapter(MainActivity.this, android.R.layout.simple_list_item_1, mySchoolsList);
             schoolsListView.setAdapter(schoolsArrayAdapter);
 
             dialog = new Dialog(MainActivity.this);
@@ -131,11 +129,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             dialog.setTitle("Welcome " + staff.getFullName());
             dialog.show();
 
-
         } else {
-            Intent intent = new Intent(MainActivity.this, ChooseSchool.class);
+            Intent intent = new Intent(MainActivity.this, NavMainActivity.class);
             startActivity(intent);
         }
+    }
+
+    @Override
+    protected void onRestart() {
+        gotoHomeActivity();
+        super.onRestart();
     }
 
     private void setupRetrofit() {
@@ -150,7 +153,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         progressDialog = new ProgressDialog(MainActivity.this);
         progressDialog.setIndeterminate(true);
         progressDialog.setMessage("Authenticating...");
-        progressDialog.setCancelable(false);
+        progressDialog.setCancelable(true);
         progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
         progressDialog.show();
     }
