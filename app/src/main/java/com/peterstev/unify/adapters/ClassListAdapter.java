@@ -32,7 +32,7 @@ public class ClassListAdapter extends RecyclerView.Adapter<ClassListAdapter.Hold
 
     @Override
     public int getItemCount() {
-        return 10000;
+        return 50;
     }
 
     public interface clickListener {

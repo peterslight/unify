@@ -1,14 +1,12 @@
 package com.peterstev.unify.ui;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Toast;
 
 import com.peterstev.unify.R;
@@ -19,7 +17,6 @@ public class ClassListEditAll extends AppCompatActivity {
     RecyclerView recyclerView;
     ClassListEditAllAdapter classListEditAllAdapter;
     Toolbar toolbar;
-    FloatingActionButton fab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,15 +27,6 @@ public class ClassListEditAll extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        fab = (FloatingActionButton) findViewById(R.id.fabGrid);
-        fab.setImageDrawable(getResources().getDrawable(R.drawable.ic_save_white_24dp));
-        fab.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(ClassListEditAll.this, "Saved", Toast.LENGTH_SHORT).show();
-            }
-        });
         configViews();
     }
 

@@ -32,7 +32,7 @@ public class ClassListEditAllAdapter extends RecyclerView.Adapter<ClassListEditA
 
     @Override
     public int getItemCount() {
-        return 200;
+        return 50;
     }
 
     public class Holder extends RecyclerView.ViewHolder {

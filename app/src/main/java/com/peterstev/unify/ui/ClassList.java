@@ -2,7 +2,6 @@ package com.peterstev.unify.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -22,8 +21,6 @@ public class ClassList extends AppCompatActivity implements ClassListAdapter.cli
     ClassListAdapter classListAdapter;
     Toolbar toolbar;
     RecyclerView.LayoutManager layoutManager;
-    FloatingActionButton fab;
-    Boolean isList = false, isGrid = true;
     Intent intent;
 
     @Override
