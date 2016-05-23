@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -69,25 +70,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
-        intent = new Intent(MainActivity.this, NavMainActivity.class);
-        startActivity(intent);
-        overridePendingTransition(R.anim.pull_in_right, R.anim.push_out_left);
 
 //        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(
 //                MainActivity.this, transitionView, DetailActivity.EXTRA_IMAGE);
 //        ActivityCompat.startActivity(MainActivity.this, new Intent(MainActivity.this, NavMainActivity.class),options.toBundle());
 
-//        passwordTextBox.setText("password");
-//       // emailTextBox.setText("admin@admin.com");
-//        email = this.emailTextBox.getText().toString();
-//        password = this.passwordTextBox.getText().toString();
-//
-//        if (TextUtils.isEmpty(email) || TextUtils.isEmpty(password)) {
-//
-//            Toast.makeText(this, "Email and Password cannot be empty", Toast.LENGTH_SHORT).show();
-//            return;
-//        }
-//        networkCheck();
+        passwordTextBox.setText("password");
+        email = this.emailTextBox.getText().toString();
+        password = this.passwordTextBox.getText().toString();
+
+        if (TextUtils.isEmpty(email) || TextUtils.isEmpty(password)) {
+
+            Toast.makeText(this, "Email and Password cannot be empty", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        networkCheck();
     }
 
     protected void loginUser(String email, String password) {
