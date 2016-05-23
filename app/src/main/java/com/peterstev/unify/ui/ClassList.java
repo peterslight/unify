@@ -68,7 +68,6 @@ public class ClassList extends AppCompatActivity implements ClassListAdapter.cli
         }
         return super.onOptionsItemSelected(item);
     }
-
     @Override
     public void onBackPressed() {
         super.onBackPressed();
