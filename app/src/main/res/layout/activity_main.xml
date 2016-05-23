@@ -1,46 +1,75 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
+    android:id="@+id/main_content"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingLeft="50dp"
-    android:paddingRight="50dp"
-    android:paddingTop="70dp"
-    android:paddingBottom="20dp"
-    tools:context=".Login">
+    tools:context=".ui.MainActivity">
 
-    <TextView
-        android:text="Login"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:textSize="25sp"
-        android:textStyle="bold"
-        android:textAppearance="@android:style/TextAppearance.Large" />
+    <include
+        android:id="@+id/main_appbar"
+        layout="@layout/toolbar_main" />
 
-    <EditText
-        android:hint="Username"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:id="@+id/et_user" />
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:paddingBottom="100dp"
+        android:paddingLeft="40dp"
+        android:paddingRight="40dp"
+        android:paddingTop="180dp"
+        tools:context=".ui.MainActivity">
 
-    <EditText
-        android:hint="Password"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="password"
-        android:inputType="textWebPassword"
-        android:id="@+id/et_pass" />
-
-        <Button
-            android:id="@+id/btn_login"
+        <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Login"
-            android:layout_marginTop="20dp"
-            style="?android:attr/buttonBarButtonStyle"/>
+            android:layout_marginTop="70dp"
+            app:hintAnimationEnabled="true">
 
+            <android.support.v7.widget.AppCompatEditText
+                android:id="@+id/et_user"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Username" />
 
-</LinearLayout>
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp">
+
+            <android.support.v7.widget.AppCompatEditText
+                android:id="@+id/et_pass"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Password"
+                android:inputType="textWebPassword" />
+
+        </android.support.design.widget.TextInputLayout>
+
+        <com.balysv.materialripple.MaterialRippleLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_margin="20dp"
+            app:mrl_rippleAlpha="0.10"
+            app:mrl_rippleColor="@color/PrimaryColor"
+            app:mrl_rippleDimension="5dp"
+            app:mrl_rippleDuration="450"
+            app:mrl_rippleHover="true"
+            app:mrl_rippleOverlay="false">
+
+            <android.support.v7.widget.AppCompatButton
+                android:id="@+id/btn_login"
+                style="@style/Widget.AppCompat.Button.Borderless"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Login"
+                android:textColor="@color/colorAccent" />
+
+        </com.balysv.materialripple.MaterialRippleLayout>
+
+    </LinearLayout>
+
+</android.support.design.widget.CoordinatorLayout>

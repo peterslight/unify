@@ -1,4 +1,4 @@
-package com.peterstev.unify;
+package com.peterstev.unify.ui;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
@@ -9,24 +9,23 @@ import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.peterstev.unify.R;
+import com.peterstev.unify.adapters.SchoolListAdapter;
 import com.peterstev.unify.login.School;
-import com.peterstev.unify.login.SchoolListAdapter;
 import com.peterstev.unify.login.Staff;
 import com.peterstev.unify.login.UnifyAuthenticationApiInterface;
 import com.peterstev.unify.login.UnifyAuthenticationApiResponse;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import retrofit2.Call;
@@ -37,57 +36,61 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
+    private static final String TAG = MainActivity.class.getSimpleName();
     Button btnLogin;
     EditText emailTextBox;
     EditText passwordTextBox;
-    String password;
-    String email;
-    private Staff staff;
-
-    private Retrofit client;
-    Button assCourses, assClasses;
+    String password, email;
+    com.peterstev.unify.login.Data data;
     Intent intent;
-
-    private List<School> mySchoolsList;
-    String[] schoolsArray;
     SchoolListAdapter schoolsArrayAdapter;
-    String recieveName;
+    String staffName, schoolName;
     ListView schoolsListView;
     Dialog dialog;
-    Object[] objectArray;
-
-
+    private Staff staff;
+    private Retrofit client;
+    private List<School> mySchoolsList;
     private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.main_toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
         this.setupRetrofit();
 
         btnLogin = (Button) findViewById(R.id.btn_login);
         emailTextBox = (EditText) findViewById(R.id.et_user);
         passwordTextBox = (EditText) findViewById(R.id.et_pass);
         btnLogin.setOnClickListener(this);
-
     }
 
     @Override
     public void onClick(View v) {
+        intent = new Intent(MainActivity.this, NavMainActivity.class);
+        startActivity(intent);
+        overridePendingTransition(R.anim.pull_in_right, R.anim.push_out_left);
 
-        email = this.emailTextBox.getText().toString();
-        password = this.passwordTextBox.getText().toString();
-        passwordTextBox.setText("password");
+//        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(
+//                MainActivity.this, transitionView, DetailActivity.EXTRA_IMAGE);
+//        ActivityCompat.startActivity(MainActivity.this, new Intent(MainActivity.this, NavMainActivity.class),options.toBundle());
 
-        if (TextUtils.isEmpty(email) || TextUtils.isEmpty(password)) {
-
-            Toast.makeText(this, "Email and Password cannot be empty", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        networkCheck();
+//        passwordTextBox.setText("password");
+//       // emailTextBox.setText("admin@admin.com");
+//        email = this.emailTextBox.getText().toString();
+//        password = this.passwordTextBox.getText().toString();
+//
+//        if (TextUtils.isEmpty(email) || TextUtils.isEmpty(password)) {
+//
+//            Toast.makeText(this, "Email and Password cannot be empty", Toast.LENGTH_SHORT).show();
+//            return;
+//        }
+//        networkCheck();
     }
 
-    private void loginUser(String email, String password) {
+    protected void loginUser(String email, String password) {
 
         UnifyAuthenticationApiInterface service = this.client.create(UnifyAuthenticationApiInterface.class);
         Call<UnifyAuthenticationApiResponse> call = service.staffLogin(email, password);
@@ -97,29 +100,45 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             public void onResponse(Call<UnifyAuthenticationApiResponse> call,
                                    Response<UnifyAuthenticationApiResponse> response) {
 
-                UnifyAuthenticationApiResponse result = response.body();
-                School school = new School();
-                com.peterstev.unify.login.Data data = result.getData();
-                mySchoolsList = new ArrayList<School>();
-                mySchoolsList = data.getSchools();
-                staff = data.getStaff();
+                if (response.isSuccessful()) {
 
-                gotoHomeActivity();
+                    UnifyAuthenticationApiResponse result = response.body();
+                    School school = new School();
+                    data = result.getData();
+                    if (data == null) {
+                        try {
+                            this.onResponse(call, response);
+                        } catch (NullPointerException e) {
+                            Log.d("NPE", e.getMessage());
+                        }
+                    } else if (data != null) {
+                        mySchoolsList = new ArrayList<School>();
+                        mySchoolsList = data.getSchools();
+                        staff = data.getStaff();
+                        staffName = staff.getFullName();
 
+                        gotoHomeActivity();
+//                        TempPrefrence.saveToPref(MainActivity.this, "PREFS_LOGIN_LOGIN_USERNAME_KEY", emailTextBox.getText().toString());
+//                        TempPrefrence.saveToPref(MainActivity.this, "PREFS_LOGIN_LOGIN_PASSWORD_KEY", passwordTextBox.getText().toString());
+                        //TempPrefrence.
+                        passwordTextBox.getText().clear();
+                    }
+                } else {
+                    progressDialog.dismiss();
+                    Toast.makeText(MainActivity.this, "Login Unsuccessful", Toast.LENGTH_SHORT).show();
+                }
             }
 
             @Override
             public void onFailure(Call<UnifyAuthenticationApiResponse> call, Throwable t) {
                 progressDialog.dismiss();
-                Toast.makeText(MainActivity.this, "Login Failed @ onFailure", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "Network Failure Try Again", Toast.LENGTH_SHORT).show();
             }
         });
     }
 
     private void gotoHomeActivity() {
         progressDialog.dismiss();
-        if (mySchoolsList.size() > 1) {
-            //Toast.makeText(MainActivity.this, "you have " + schoolsArray.length + " schools", Toast.LENGTH_LONG).show();
             schoolsListView = new ListView(MainActivity.this);
             schoolsArrayAdapter = new SchoolListAdapter(MainActivity.this, android.R.layout.simple_list_item_1, mySchoolsList);
             schoolsListView.setAdapter(schoolsArrayAdapter);
@@ -129,16 +148,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             dialog.setTitle("Welcome " + staff.getFullName());
             dialog.show();
 
-        } else {
-            Intent intent = new Intent(MainActivity.this, NavMainActivity.class);
-            startActivity(intent);
-        }
-    }
-
-    @Override
-    protected void onRestart() {
-        gotoHomeActivity();
-        super.onRestart();
+        schoolsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                schoolName = schoolsArrayAdapter.getItem(position).getName();
+                Log.d(TAG, schoolName + staffName);
+                intent = new Intent(MainActivity.this, NavMainActivity.class);
+                intent.putExtra("staffIntent", staffName);
+                intent.putExtra("schoolIntent", schoolName);
+                startActivity(intent);
+                overridePendingTransition(R.anim.pull_in_right, R.anim.push_out_left);
+            }
+        });
     }
 
     private void setupRetrofit() {
@@ -202,5 +223,4 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         AlertDialog alert = build.create();
         alert.show();
     }
-
 }

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Unify</string>
+    <string name="app_name">Klipboard</string>
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
@@ -12,5 +12,6 @@
     <string name="openDrawer">Navigation View Closed</string>
     <string name="save_all">Save All</string>
     <string name="edit_all">Edit All</string>
-s
+    <string name="title_activity_profile">Profile</string>
+    <string name="section_format">Hello World from section</string>
 </resources>

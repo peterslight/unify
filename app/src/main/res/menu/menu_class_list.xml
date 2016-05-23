@@ -3,10 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/save_all"
+        android:id="@+id/toGrid"
         android:orderInCategory="1"
-        android:title="@string/edit_all"
-        android:icon="@drawable/ic_edit_black_48dp"
+        android:title="Grid"
         app:showAsAction="always" />
 
+
+    <item
+        android:id="@+id/toList"
+        android:orderInCategory="2"
+        android:title="List"
+        app:showAsAction="always" />
 </menu>

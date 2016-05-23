@@ -1,19 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.peterstev.unify" >
+    package="com.peterstev.unify">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
-            android:label="@string/app_name" >
+            android:name=".ui.MainActivity"
+            android:windowSoftInputMode="stateAlwaysHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -21,8 +20,9 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".NavMainActivity"
+            android:name=".ui.NavMainActivity"
             android:label="@string/app_name"
+            android:launchMode="singleTop"
             android:theme="@style/NavTheme">
             <intent-filter>
                 <action android:name="android.intent.action.NAVMAINACTIVITY" />
@@ -30,7 +30,47 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".ui.ClassList"
+            android:label="Class List"
+            android:launchMode="singleTop"
+            android:parentActivityName=".ui.NavMainActivity"
+            android:theme="@style/AppTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.peterstev.unify.ui.NavMainActivity" />
+        </activity>
+        <activity
+            android:name=".ui.ClassListEditAll"
+            android:configChanges="orientation"
+            android:label="Edit All"
+            android:launchMode="singleTop"
+            android:parentActivityName=".ui.ClassList"
+            android:theme="@style/AppTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.peterstev.unify.ui.ClassList" />
+        </activity>
+        <activity
+            android:name=".ui.Profile"
+            android:label="@string/title_activity_profile"
+            android:launchMode="singleTop"
+            android:parentActivityName=".ui.ClassList"
+            android:theme="@style/AppTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.peterstev.unify.ui.ClassList" />
+        </activity>
+        <activity
+            android:name=".ui.MyCourses"
+            android:label="My Courses"
+            android:launchMode="singleTop"
+            android:parentActivityName=".ui.NavMainActivity"
+            android:theme="@style/AppTheme">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.peterstev.unify.ui.NavMainActivity" />
+        </activity>
 
     </application>
-
 </manifest>
